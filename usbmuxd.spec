@@ -1,15 +1,16 @@
 Summary:	Daemon for communicating with Apple's iPod Touch and iPhone
 Summary(pl.UTF-8):	Demon do komunikacji z urządzeniami iPod Touch i iPhone firmy Apple
 Name:		usbmuxd
-Version:	1.0.4
+Version:	1.0.5
 Release:	1
 License:	GPL v2+ (daemon) and LGPL v2+ (library)
 Group:		Daemons
 Source0:	http://marcansoft.com/uploads/usbmuxd/%{name}-%{version}.tar.bz2
-# Source0-md5:	450c72273dd1dcc1d0fcfc7138122d54
+# Source0-md5:	484970632a739206afe86802c6169300
 Patch0:		%{name}-udevuser.patch
 URL:		http://marcansoft.com/blog/iphonelinux/usbmuxd/
 BuildRequires:	cmake >= 2.6
+BuildRequires:	libplist-devel
 BuildRequires:	libusb-devel >= 1.0.3
 BuildRequires:	rpmbuild(macros) >= 1.202
 Requires(postun):	/usr/sbin/groupdel
