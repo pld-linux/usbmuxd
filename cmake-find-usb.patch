@@ -1,0 +1,21 @@
+blah
+
+includedir variable is /usr/include in .pc:
+includedir=/usr/include
+
+bt header is in libusb-1.0 subdir:
+Cflags: -I${includedir}/libusb-1.0
+
+so this cmake macro fails:
+
+--- usbmuxd-1.0.8/Modules/FindUSB.cmake~	2012-04-08 01:50:09.000000000 +0300
++++ usbmuxd-1.0.8/Modules/FindUSB.cmake	2012-05-12 02:06:09.506368130 +0300
+@@ -24,7 +26,7 @@
+ # Include dir
+ find_path(USB_INCLUDE_DIR
+   NAMES libusb.h
+-  PATHS ${USB_PKGCONF_INCLUDE_DIRS}
++  PATHS /usr/include/libusb-1.0
+ )
+ 
+ # Finally the library itself
