@@ -5,6 +5,7 @@ Version:	1.0.8
 Release:	1
 License:	GPL v2+ (daemon) and LGPL v2.1+ (library)
 Group:		Daemons
+#Source0Download: http://www.libimobiledevice.org/
 Source0:	http://www.libimobiledevice.org/downloads/%{name}-%{version}.tar.bz2
 # Source0-md5:	4b33cc78e479e0f9a6745f9b9a8b60a8
 Patch0:		cmake-find-usb.patch
