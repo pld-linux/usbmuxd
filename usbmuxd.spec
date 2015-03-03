@@ -2,7 +2,7 @@ Summary:	Daemon for communicating with Apple's iPod Touch and iPhone
 Summary(pl.UTF-8):	Demon do komunikacji z urządzeniami iPod Touch i iPhone firmy Apple
 Name:		usbmuxd
 Version:	1.0.8
-Release:	1
+Release:	2
 License:	GPL v2+ (daemon) and LGPL v2.1+ (library)
 Group:		Daemons
 #Source0Download: http://www.libimobiledevice.org/
