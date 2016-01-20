@@ -41,31 +41,6 @@ usbmuxd jest demonem używanym do komunikacji z urządzeniami iPod Touch
 i iPhone firmy Apple. Umożliwia jednoczesny dostęp do kilku usług na
 urządzeniu.
 
-%package libs
-Summary:	libusbmuxd library
-Summary(pl.UTF-8):	Biblioteka libusbmuxd
-Group:		Libraries
-Requires:	libusb >= 1.0.3
-
-%description libs
-libusbmuxd is a library to communicate with the usbmux daemon.
-
-%description libs -l pl.UTF-8
-libusbmuxd jest biblioteką do komunikacji z demonem usbmux.
-
-%package devel
-Summary:	Header files for libusbmuxd library
-Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libusbmuxd
-Group:		Development/Libraries
-Requires:	%{name}-libs = %{version}-%{release}
-Requires:	libusb-devel >= 1.0.3
-
-%description devel
-Header files for libusbmuxd library.
-
-%description devel -l pl.UTF-8
-Pliki nagłówkowe biblioteki libusbmuxd.
-
 %prep
 %setup -q
 
@@ -96,26 +71,10 @@ if [ "$1" = "0" ]; then
 	%groupremove usbmux
 fi
 
-%post	libs -p /sbin/ldconfig
-%postun	libs -p /sbin/ldconfig
-
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS README
-#%attr(755,root,root) %{_bindir}/iproxy
 %attr(755,root,root) %{_sbindir}/usbmuxd
 %{_mandir}/man1/usbmuxd.1*
 /lib/udev/rules.d/39-usbmuxd.rules
 %{systemdunitdir}/usbmuxd.service
-
-%files libs
-%defattr(644,root,root,755)
-#%attr(755,root,root) %{_libdir}/libusbmuxd.so.*.*.*
-#%attr(755,root,root) %ghost %{_libdir}/libusbmuxd.so.2
-
-%files devel
-%defattr(644,root,root,755)
-#%attr(755,root,root) %{_libdir}/libusbmuxd.so
-#%{_includedir}/usbmuxd-proto.h
-#%{_includedir}/usbmuxd.h
-#%{_pkgconfigdir}/libusbmuxd.pc
