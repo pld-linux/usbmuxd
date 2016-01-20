@@ -1,5 +1,11 @@
 # TODO
 # - add systemd and udev support both
+#   - install appropriate udev rule with udev opts
+#   - install appropriate systemd file with systemd opts
+#   - make them not to conflict
+#   - their "support" itself is just imply other options:
+#     -u, --udev    Run in udev operation mode (implies -n and -z)
+#     -s, --systemd Run in systemd operation mode (implies -z and -f)
 #
 # Conditional build:
 %bcond_without	preflight		# preflight worker support
@@ -7,18 +13,16 @@
 Summary:	Daemon for communicating with Apple's iPod Touch and iPhone
 Summary(pl.UTF-8):	Demon do komunikacji z urządzeniami iPod Touch i iPhone firmy Apple
 Name:		usbmuxd
-Version:	1.0.9
+Version:	1.1.0
 Release:	1
 # All code is dual licenses as GPLv3+ or GPLv2+, except libusbmuxd which is LGPLv2+.
 License:	GPL v2+ (daemon) and LGPL v2.1+ (library)
 Group:		Daemons
 #Source0Download: http://www.libimobiledevice.org/
 Source0:	http://www.libimobiledevice.org/downloads/%{name}-%{version}.tar.bz2
-# Source0-md5:	e98dff7fcf71ac8f218555abb02088e4
-Source1:	https://github.com/libimobiledevice/usbmuxd/raw/1.0.9/src/%{name}-proto.h
-# Source1-md5:	0cb310cb35a8746d71db5ee160cc385c
+# Source0-md5:	34361c59320cb0b1f9ebcd2798ee1b39
 URL:		http://www.libimobiledevice.org/
-%{?with_preflight:BuildRequires:	libimobiledevice >= 1.1.6}
+%{?with_preflight:BuildRequires:	libimobiledevice-devel >= 1.1.6}
 BuildRequires:	libplist-devel >= 1.11
 BuildRequires:	libusb-devel >= 1.0.3
 BuildRequires:	libusbmuxd-devel >= 1.0.9
@@ -45,9 +49,6 @@ urządzeniu.
 
 %prep
 %setup -q
-
-# missing from source
-cp -p %{SOURCE1} src
 
 %build
 %configure \
