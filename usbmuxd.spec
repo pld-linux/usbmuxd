@@ -1,3 +1,5 @@
+# TODO
+# - add systemd and udev support both
 #
 # Conditional build:
 %bcond_without	preflight		# preflight worker support
@@ -6,7 +8,7 @@ Summary:	Daemon for communicating with Apple's iPod Touch and iPhone
 Summary(pl.UTF-8):	Demon do komunikacji z urządzeniami iPod Touch i iPhone firmy Apple
 Name:		usbmuxd
 Version:	1.0.9
-Release:	0.1
+Release:	1
 # All code is dual licenses as GPLv3+ or GPLv2+, except libusbmuxd which is LGPLv2+.
 License:	GPL v2+ (daemon) and LGPL v2.1+ (library)
 Group:		Daemons
@@ -19,6 +21,7 @@ URL:		http://www.libimobiledevice.org/
 %{?with_preflight:BuildRequires:	libimobiledevice >= 1.1.6}
 BuildRequires:	libplist-devel >= 1.11
 BuildRequires:	libusb-devel >= 1.0.3
+BuildRequires:	libusbmuxd-devel >= 1.0.9
 BuildRequires:	rpmbuild(macros) >= 1.600
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
@@ -26,7 +29,6 @@ Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Requires:	%{name}-libs = %{version}-%{release}
 Provides:	group(usbmux)
 Provides:	user(usbmux)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -50,7 +52,9 @@ cp -p %{SOURCE1} src
 %build
 %configure \
 	--disable-silent-rules \
+	--without-systemd \
 	%{!?with_preflight:--without-preflight}
+
 %{__make}
 
 %install
@@ -77,4 +81,3 @@ fi
 %attr(755,root,root) %{_sbindir}/usbmuxd
 %{_mandir}/man1/usbmuxd.1*
 /lib/udev/rules.d/39-usbmuxd.rules
-%{systemdunitdir}/usbmuxd.service
