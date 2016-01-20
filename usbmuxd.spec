@@ -26,7 +26,9 @@ URL:		http://www.libimobiledevice.org/
 BuildRequires:	libplist-devel >= 1.11
 BuildRequires:	libusb-devel >= 1.0.3
 BuildRequires:	libusbmuxd-devel >= 1.0.9
+BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.600
+BuildRequires:	systemd-units
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
 Requires(pre):	/bin/id
@@ -36,6 +38,8 @@ Requires(pre):	/usr/sbin/useradd
 Provides:	group(usbmux)
 Provides:	user(usbmux)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%undefine	__cxx
 
 %description
 usbmuxd is a daemon used for communicating with Apple's iPod Touch and
