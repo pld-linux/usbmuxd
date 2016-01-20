@@ -1,17 +1,23 @@
+#
+# Conditional build:
+%bcond_without	preflight		# preflight worker support
+
 Summary:	Daemon for communicating with Apple's iPod Touch and iPhone
 Summary(pl.UTF-8):	Demon do komunikacji z urządzeniami iPod Touch i iPhone firmy Apple
 Name:		usbmuxd
-Version:	1.0.8
-Release:	2
+Version:	1.0.9
+Release:	0.1
+# All code is dual licenses as GPLv3+ or GPLv2+, except libusbmuxd which is LGPLv2+.
 License:	GPL v2+ (daemon) and LGPL v2.1+ (library)
 Group:		Daemons
 #Source0Download: http://www.libimobiledevice.org/
 Source0:	http://www.libimobiledevice.org/downloads/%{name}-%{version}.tar.bz2
-# Source0-md5:	4b33cc78e479e0f9a6745f9b9a8b60a8
-Patch0:		cmake-find-usb.patch
-URL:		http://marcansoft.com/blog/iphonelinux/usbmuxd/
-BuildRequires:	cmake >= 2.6
-BuildRequires:	libplist-devel
+# Source0-md5:	e98dff7fcf71ac8f218555abb02088e4
+Source1:	https://github.com/libimobiledevice/usbmuxd/raw/1.0.9/src/%{name}-proto.h
+# Source1-md5:	0cb310cb35a8746d71db5ee160cc385c
+URL:		http://www.libimobiledevice.org/
+%{?with_preflight:BuildRequires:	libimobiledevice >= 1.1.6}
+BuildRequires:	libplist-devel >= 1.11
 BuildRequires:	libusb-devel >= 1.0.3
 BuildRequires:	rpmbuild(macros) >= 1.600
 Requires(postun):	/usr/sbin/groupdel
@@ -62,17 +68,19 @@ Pliki nagłówkowe biblioteki libusbmuxd.
 
 %prep
 %setup -q
-%patch0 -p1
+
+# missing from source
+cp -p %{SOURCE1} src
 
 %build
-install -d build
-cd build
-%cmake ..
+%configure \
+	--disable-silent-rules \
+	%{!?with_preflight:--without-preflight}
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} -C build install \
+%{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
@@ -94,19 +102,20 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS README
-%attr(755,root,root) %{_bindir}/iproxy
+#%attr(755,root,root) %{_bindir}/iproxy
 %attr(755,root,root) %{_sbindir}/usbmuxd
-/lib/udev/rules.d/85-usbmuxd.rules
+%{_mandir}/man1/usbmuxd.1*
+/lib/udev/rules.d/39-usbmuxd.rules
+%{systemdunitdir}/usbmuxd.service
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libusbmuxd.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libusbmuxd.so.2
+#%attr(755,root,root) %{_libdir}/libusbmuxd.so.*.*.*
+#%attr(755,root,root) %ghost %{_libdir}/libusbmuxd.so.2
 
 %files devel
 %defattr(644,root,root,755)
-%doc README.devel
-%attr(755,root,root) %{_libdir}/libusbmuxd.so
-%{_includedir}/usbmuxd-proto.h
-%{_includedir}/usbmuxd.h
-%{_pkgconfigdir}/libusbmuxd.pc
+#%attr(755,root,root) %{_libdir}/libusbmuxd.so
+#%{_includedir}/usbmuxd-proto.h
+#%{_includedir}/usbmuxd.h
+#%{_pkgconfigdir}/libusbmuxd.pc
