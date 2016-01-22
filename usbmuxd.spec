@@ -15,8 +15,7 @@ Summary(pl.UTF-8):	Demon do komunikacji z urządzeniami iPod Touch i iPhone firm
 Name:		usbmuxd
 Version:	1.1.0
 Release:	1
-# All code is dual licenses as GPLv3+ or GPLv2+, except libusbmuxd which is LGPLv2+.
-License:	GPL v2+ (daemon) and LGPL v2.1+ (library)
+License:	GPL v2 or GPL v3
 Group:		Daemons
 #Source0Download: http://www.libimobiledevice.org/
 Source0:	http://www.libimobiledevice.org/downloads/%{name}-%{version}.tar.bz2
@@ -35,6 +34,9 @@ Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
+%{?with_preflight:Requires:	libimobiledevice >= 1.1.6}
+Requires:	libplist >= 1.11
+Requires:	libusb >= 1.0.3
 Provides:	group(usbmux)
 Provides:	user(usbmux)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -82,7 +84,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS README
+%doc AUTHORS NEWS README
 %attr(755,root,root) %{_sbindir}/usbmuxd
 %{_mandir}/man1/usbmuxd.1*
 /lib/udev/rules.d/39-usbmuxd.rules
