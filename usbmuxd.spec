@@ -8,23 +8,22 @@
 #     -s, --systemd Run in systemd operation mode (implies -z and -f)
 #
 # Conditional build:
-%bcond_without	preflight		# preflight worker support
+%bcond_without	preflight	# preflight worker support
 
 Summary:	Daemon for communicating with Apple's iPod Touch and iPhone
 Summary(pl.UTF-8):	Demon do komunikacji z urządzeniami iPod Touch i iPhone firmy Apple
 Name:		usbmuxd
-Version:	1.1.0
-Release:	3
+Version:	1.1.1
+Release:	1
 License:	GPL v2 or GPL v3
 Group:		Daemons
-#Source0Download: http://www.libimobiledevice.org/
-Source0:	http://www.libimobiledevice.org/downloads/%{name}-%{version}.tar.bz2
-# Source0-md5:	34361c59320cb0b1f9ebcd2798ee1b39
-URL:		http://www.libimobiledevice.org/
-%{?with_preflight:BuildRequires:	libimobiledevice-devel >= 1.1.6}
-BuildRequires:	libplist-devel >= 1.11
-BuildRequires:	libusb-devel >= 1.0.3
-BuildRequires:	libusbmuxd-devel >= 1.0.9
+#Source0Download: https://libimobiledevice.org/
+Source0:	https://github.com/libimobiledevice/usbmuxd/releases/download/%{version}/%{name}-%{version}.tar.bz2
+# Source0-md5:	7450ab28776dcd10b593c9a4243e6755
+URL:		https://libimobiledevice.org/
+%{?with_preflight:BuildRequires:	libimobiledevice-devel >= 1.3.0}
+BuildRequires:	libplist-devel >= 2.2.0
+BuildRequires:	libusb-devel >= 1.0.9
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.600
 BuildRequires:	systemd-units
@@ -34,9 +33,9 @@ Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-%{?with_preflight:Requires:	libimobiledevice >= 1.1.6}
-Requires:	libplist >= 1.11
-Requires:	libusb >= 1.0.3
+%{?with_preflight:Requires:	libimobiledevice >= 1.3.0}
+Requires:	libplist >= 2.2.0
+Requires:	libusb >= 1.0.9
 Provides:	group(usbmux)
 Provides:	user(usbmux)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -84,7 +83,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS README
+%doc AUTHORS NEWS README.md
 %attr(755,root,root) %{_sbindir}/usbmuxd
-%{_mandir}/man1/usbmuxd.1*
+%{_mandir}/man8/usbmuxd.8*
 /lib/udev/rules.d/39-usbmuxd.rules
