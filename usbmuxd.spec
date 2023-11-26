@@ -14,15 +14,20 @@ Summary:	Daemon for communicating with Apple's iPod Touch and iPhone
 Summary(pl.UTF-8):	Demon do komunikacji z urządzeniami iPod Touch i iPhone firmy Apple
 Name:		usbmuxd
 Version:	1.1.1
-Release:	1
+Release:	2
 License:	GPL v2 or GPL v3
 Group:		Daemons
 #Source0Download: https://libimobiledevice.org/
 Source0:	https://github.com/libimobiledevice/usbmuxd/releases/download/%{version}/%{name}-%{version}.tar.bz2
 # Source0-md5:	7450ab28776dcd10b593c9a4243e6755
+Patch0:		%{name}-libplist.patch
+Patch1:		%{name}-sh.patch
 URL:		https://libimobiledevice.org/
+BuildRequires:	autoconf >= 2.64
+BuildRequires:	automake
 %{?with_preflight:BuildRequires:	libimobiledevice-devel >= 1.3.0}
-BuildRequires:	libplist-devel >= 2.2.0
+BuildRequires:	libplist-devel >= 2.3.0
+BuildRequires:	libtool
 BuildRequires:	libusb-devel >= 1.0.9
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.600
@@ -34,7 +39,7 @@ Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
 %{?with_preflight:Requires:	libimobiledevice >= 1.3.0}
-Requires:	libplist >= 2.2.0
+Requires:	libplist >= 2.3.0
 Requires:	libusb >= 1.0.9
 Provides:	group(usbmux)
 Provides:	user(usbmux)
@@ -54,8 +59,15 @@ urządzeniu.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
 
 %build
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure \
 	--disable-silent-rules \
 	--without-systemd \

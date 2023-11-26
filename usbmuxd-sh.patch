@@ -1,0 +1,11 @@
+--- usbmuxd-1.1.1/configure.ac.orig	2020-06-09 03:57:16.000000000 +0200
++++ usbmuxd-1.1.1/configure.ac	2023-11-26 21:16:44.713213603 +0100
+@@ -36,7 +36,7 @@ if test "x$have_limd" = "xyes"; then
+     AC_SUBST(libimobiledevice_CFLAGS)
+     AC_SUBST(libimobiledevice_LIBS)
+     CACHED_CFLAGS="$CFLAGS"
+-    CFLAGS+=" $libimobiledevice_CFLAGS"
++    CFLAGS="$CFLAGS $libimobiledevice_CFLAGS"
+     AC_CACHE_CHECK(for enum idevice_connection_type, ac_cv_enum_idevice_connection_type,
+       AC_TRY_COMPILE([
+         #include <libimobiledevice/libimobiledevice.h>
